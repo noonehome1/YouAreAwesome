@@ -10,31 +10,35 @@ import SwiftUI
 struct ContentView: View {
     @State private var message = ""
     @State private var imageName = ""
-    @State private var imageNumber = 0
     
     var body: some View {
         VStack {
-            Spacer()
+            Text(message)
+                .font(.largeTitle)
+                .fontWeight(.heavy)
+                .multilineTextAlignment(.center)
+                .minimumScaleFactor(0.5)
+                .frame(height: 100)
+                .animation(.easeInOut(duration: 0.2), value: message)
+                .foregroundStyle(.red)
+            
             Image(imageName)
                 .resizable()
                 .scaledToFit()
                 .clipShape(RoundedRectangle(cornerRadius: 30))
                 .shadow(radius: 30)
-            Text(message)
-                .font(.largeTitle)
-                .fontWeight(.ultraLight)
+                .animation(.easeInOut, value: imageName)
+            
+ 
             Spacer()
-            Button("Press Me!") {
-                let message1 = "You are Awesome!"
-                let message2 = "You are Great!"
+            
+            Button("Show Message!") {
+                let messages: [String] = ["You are Awesome!", "You are Great!", "You are Fantastic!", "You are Amazing!", "You are Incredible!", "This is the way it goes, Keep going, You're doing great!"]
                 
-                message = (message == message1 ? message2 : message1)
-                imageName = (imageName != "image9" ? "image\(imageNumber)" : "image0")
-                if (imageNumber == 9) {
-                    imageNumber = 0
-                } else {
-                    imageNumber += 1
-                }
+                message = messages[Int.random(in: 0..<messages.count)]
+                
+                //MARK: Do Images
+                imageName = "image\(Int.random(in: 0..<10))"
             }
             .buttonStyle(.borderedProminent)
             .font(.title2)
