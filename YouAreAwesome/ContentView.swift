@@ -8,9 +8,8 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var message = "I am a app developer!"
-    @State private var imageName = "sun.max.fill"
-    @State private var count = 1
+    @State private var message = ""
+    @State private var imageName = ""
     
     var body: some View {
         VStack {
@@ -18,34 +17,24 @@ struct ContentView: View {
             Image(systemName: imageName)
                 .resizable()
                 .scaledToFit()
-//                .foregroundStyle(.orange)
-//                .frame(width: 200, height: 200 )
-//            Text(message)
-//                .font(.largeTitle)
-//                .fontWeight(.heavy)
-//                .foregroundStyle(.red)
+                .foregroundStyle(.orange)
+            Text(message)
+                .font(.largeTitle)
+                .fontWeight(.ultraLight)
             Spacer()
-            HStack {
-                Button("Press Me!") {
-                    if (count % 2 == 0) {
-                        imageName = "moon.stars.fill"
-                        count += 1
-                    } else {
-                        imageName = "sun.max.fill"
-                        count += 1
-                    }
-                }
-                .buttonStyle(.borderedProminent)
-                .font(.title2)
-                .tint(.orange)
-//                Button("Great!") {
-//                    message = "Great!"
-//                }
-//                .buttonStyle(.borderedProminent)
-//                .font(.title2)
-//                .tint(.orange)
+            Button("Press Me!") {
+                let message1 = "You are Awesome!"
+                let imageName1 = "sun.max.fill"
+                let message2 = "You are Great!"
+                let imageName2 = "hand.thumbsup"
+                
+                imageName = (message == message1 ? imageName2 : imageName1)
+                message = (message == message1 ? message2: message1)
+                
             }
-
+            .buttonStyle(.borderedProminent)
+            .font(.title2)
+            .tint(.orange)
         }
         .padding()
     }
