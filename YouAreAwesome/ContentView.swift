@@ -6,11 +6,17 @@
 //
 
 import SwiftUI
+import AVFAudio
 
 struct ContentView: View {
     @State private var message = ""
     @State private var imageName = ""
-    
+    @State private var soundName = ""
+    @State private var lastMessageNumber = -1
+    @State private var lastImageNumber = -1
+    @State private var lastSoundNumber = -1
+    @State private var audioPlayer: AVAudioPlayer!
+ 
     var body: some View {
         VStack {
             Text(message)
@@ -33,12 +39,42 @@ struct ContentView: View {
             Spacer()
             
             Button("Show Message!") {
+                
                 let messages: [String] = ["You are Awesome!", "You are Great!", "You are Fantastic!", "You are Amazing!", "You are Incredible!", "This is the way it goes, Keep going, You're doing great!"]
                 
-                message = messages[Int.random(in: 0..<messages.count)]
+                var messageNumber: Int
+                repeat {
+                    messageNumber = Int.random(in: 0..<messages.count)
+                } while lastMessageNumber == messageNumber
+                message = messages[messageNumber]
+                lastMessageNumber = messageNumber
                 
                 //MARK: Do Images
-                imageName = "image\(Int.random(in: 0..<10))"
+                var imageNumber: Int
+                repeat {
+                    imageNumber = Int.random(in: 0..<10)
+                } while imageNumber == lastImageNumber
+                imageName = "image\(imageNumber)"
+                lastImageNumber = imageNumber
+                
+                //MARK: Do Sound
+                var soundNumber: Int
+                repeat {
+                    soundNumber = Int.random(in: 0...5)
+                } while lastSoundNumber == soundNumber
+                soundName = "sound\(soundNumber)"
+                lastSoundNumber = soundNumber
+                
+                guard let soundFile = NSDataAsset(name: soundName) else {
+                    print("😡 Could not read file named \(soundName)")
+                    return
+                }
+                do {
+                    audioPlayer = try AVAudioPlayer(data: soundFile.data)
+                    audioPlayer.play()
+                } catch {
+                    print("😡 ERROR: \(error.localizedDescription) vreating audioPlayer")
+                }
             }
             .buttonStyle(.borderedProminent)
             .font(.title2)
